@@ -1,6 +1,7 @@
 (ns cardgames.main
   (:require ["package:flutter/material.dart" :as m]
-            [cljd.flutter :as f]))
+            [cljd.flutter :as f]
+            [cardgames.services.deck :as d]))
 
 (defn main []
   (f/run
@@ -12,8 +13,12 @@
     .appBar (m/AppBar
              .title (m/Text "Welcome to ClojureDart")))
    .body
+   :watch [test (d/get "deck/new/shuffle")]
+   :let [_ (dart:core/print (str "test:" test
+                                 "\n"
+                                 (get test "deck_id")))]
    m/Center
-   (m/Text "Let's get coding!"
+   (m/Text (str "hi")
            .style (m/TextStyle
                    .color m.Colors/red
                    .fontSize 32.0))))

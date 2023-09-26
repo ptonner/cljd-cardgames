@@ -1,0 +1,25 @@
+(ns cardgames.services.deck
+  (:require [clojure.string :as str]
+            ["dart:convert" :as c]
+            ["package:http/http.dart" :as http]))
+
+(def base-url "https://www.deckofcardsapi.com/api")
+
+(defn make-query [query & options]
+  (Uri/parse
+   (str/join "/"
+             [base-url
+              query
+              (when options
+                (str "?" (str/join "&"
+                                   (for [[k v] options]
+                                     (str (str k) "=" (str v))))))])))
+
+(defn get [query & options]
+  (let [url (make-query query options)
+        resp (await (http/get url))]
+    (when (not (-> resp .-bodyBytes .-isEmpty))
+      (-> resp
+          .-bodyBytes
+          c/utf8.decode
+          c/jsonDecode))))
