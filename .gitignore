@@ -51,3 +51,5 @@ test/cljd-out/
 
 # Clojure
 **/.clj-kondo/.cache
+/.clj-kondo/tensegritics/
+/.lsp/
